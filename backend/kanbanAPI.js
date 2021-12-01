@@ -1,3 +1,4 @@
+'use strict'
 import { Application, Router } from 'https://deno.land/x/oak/mod.ts';
 import Card from './card.js';
 
@@ -17,11 +18,11 @@ function getCards(column) {
     return c;
 }
 
-function moveCart(card, i) {
+function moveCard(card, i) {
     card.move(i);
 }
 
-function addCart(column, text) {
+function addCard(column, text) {
     cards.push(new Card(column, text));
 }
 
