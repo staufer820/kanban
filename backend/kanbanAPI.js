@@ -1,5 +1,5 @@
 'use strict'
-import { Application, Router } from 'https://deno.land/x/oak/mod.ts';
+import { Application, Router } from 'https://deno.land/x/oak@v6.3.1/mod.ts';
 import Card from './card.js';
 
 const port = 8000;
