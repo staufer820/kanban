@@ -3,29 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Kanban Board</title>
-    <style>
-        .column {
-            float: left;
-            width: 33.33%;
-            min-height: calc(100vh - 16px);
-        }
-
-        /* Clear floats after the columns */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-        .todo{
-            background-color: yellow;
-        }
-        .inProgress{
-            background-color: yellowgreen;
-        }
-        .done{
-            background-color: forestgreen;
-        }
-    </style>
+    <link rel="stylesheet" href="css/column.css">
 </head>
 <body>
     <div class="row">
