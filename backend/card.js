@@ -1,3 +1,4 @@
+'use strict'
 class Card {
     static n = 0;
     constructor(column, text) {
