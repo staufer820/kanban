@@ -1,11 +1,55 @@
-"use strict"
-import {serve} from "https://deno.land/std@0.74.0/http/server.ts";
+import { Application, Router } from 'https://deno.land/x/oak/mod.ts';
+import Card from './card.js';
 
-const server = serve({port:8000});
+const port = 8000;
+const app = new Application();
+const router = new Router();
 
-console.log("http://localhost");
+let cards = [new Card(0, "Test"), new Card(2, "Test 2")];
 
-for await(const req of server) {
-    const text = await Deno.readTextFile('../frontend/index.html');
-    req.respond({body: text});
+function getCards(column) {
+    let c = [];
+
+    cards.forEach(card => {
+        if (card.column == column) c.push(card);
+    });
+
+    return c;
 }
+
+function moveCart(card, i) {
+    card.move(i);
+}
+
+function addCart(column, text) {
+    cards.push(new Card(column, text));
+}
+
+function getCard(id) {
+    let card = null;
+    cards.forEach(c => {
+        if (c.id == id) card = c;
+    })
+    return card;
+}
+
+router.get('/cards/all', (ctx) => {
+    ctx.response.body = cards;
+});
+
+router.get('/cards/:col', (ctx) => {
+    ctx.response.body = getCards(ctx.params.col);
+});
+
+router.post('/move', (ctx) => {
+    moveCard(getCard(ctx.request.body["id"]), ctx.request.body["column"]);
+});
+
+app.use(router.allowedMethods());
+app.use(router.routes());
+
+app.addEventListener('listen', () => {
+    console.log(`Listening on: localhost:${port}`);
+});
+
+await app.listen({port});
