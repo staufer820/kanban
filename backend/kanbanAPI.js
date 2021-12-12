@@ -1,12 +1,9 @@
 'use strict'
-import { Application, Router } from 'https://deno.land/x/oak@v6.3.1/mod.ts';
+import {Router} from 'https://deno.land/x/oak@v6.3.1/mod.ts';
 import Card from './card.js';
-
-const port = 8000;
-const app = new Application();
 const router = new Router();
 
-let cards = [new Card(0, "Test"), new Card(2, "Test 2")];
+let cards = [];
 
 function getCards(column) {
     let c = [];
@@ -18,13 +15,15 @@ function getCards(column) {
     return c;
 }
 
-function moveCard(card, i) {
-    card.move(i);
+function moveCard(card, col) {
+    card.move(col);
 }
 
 function addCard(column, text) {
-    cards.push(new Card(column, text));
+    cards.push(new Card(text, column));
 }
+
+
 
 function getCard(id) {
     let card = null;
@@ -32,6 +31,14 @@ function getCard(id) {
         if (c.id == id) card = c;
     })
     return card;
+}
+
+function deleteCard(id){
+    let cardToDelete = getCard(id);
+    const index = cards.indexOf(cardToDelete);
+    if (index > -1) {
+        cards.splice(index, 1);
+    }
 }
 
 router.get('/cards/all', (ctx) => {
@@ -42,15 +49,18 @@ router.get('/cards/:col', (ctx) => {
     ctx.response.body = getCards(ctx.params.col);
 });
 
-router.post('/move', (ctx) => {
-    moveCard(getCard(ctx.request.body["id"]), ctx.request.body["column"]);
+router.put('/add', async (ctx) => {
+    const newItem = await ctx.request.body({type: "json" }).value;
+    addCard(newItem.column, newItem.text);
 });
 
-app.use(router.allowedMethods());
-app.use(router.routes());
-
-app.addEventListener('listen', () => {
-    console.log(`Listening on: localhost:${port}`);
+router.post('/move', async (ctx) => {
+    const item = await ctx.request.body({type: "json" }).value;
+    moveCard(getCard(item.id), item.column);
 });
 
-await app.listen({port});
+router.delete('/delete/:id', (ctx) => {
+    deleteCard(ctx.params.id);
+});
+
+export const apiRoutes = router.routes();

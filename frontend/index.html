@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Kanban Board</title>
-    <link rel="stylesheet" href="css/column.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+    <input id="description" type="text">
+    <input id="col" type="range" min="1" max="3" value="1">
+    <button onclick="createCard()">Create</button>
     <div class="row">
-        <div class="column todo">TODO</div>
-        <div class="column inProgress">IN PROGRESS</div>
-        <div class="column done">DONE</div>
+        <div id="1" class="column todo"></div>
+        <div id="2" class="column inProgress"></div>
+        <div id="3" class="column done"></div>
     </div>
-    <script src="./js/script.js"></script>
+    <script src="js/app.js">
+    </script>
 </body>
 </html>

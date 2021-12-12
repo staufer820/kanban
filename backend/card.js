@@ -9,13 +9,7 @@ class Card {
     }
 
     move(i) {
-        if (this.column <= 0 && i == -1) {
-            this.column = 0;
-        } else if (this.column >= 2 && i == 1) {
-            this.column = 2;
-        } else {
-            this.column += i;
-        }
+        this.column = i;
     }
 }
 
